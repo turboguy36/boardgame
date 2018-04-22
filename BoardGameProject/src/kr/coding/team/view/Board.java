@@ -3,7 +3,9 @@ package kr.coding.team.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,7 +23,11 @@ import javax.swing.JSplitPane;
 public class Board implements ActionListener{
 	private final String TITLE;
 	Logger logger = Logger.getLogger(getClass().getSimpleName());
-	
+	private final String NORTH = "North" ;
+	private final String SOUTH = "South" ;
+	private final String WEST  = "West"  ;
+	private final String EAST  = "East"  ;
+	private final String CENTER= "Center";
 	/**
 	 * 생성자 
 	 * @param title : 윈도우 제목
@@ -63,7 +69,7 @@ public class Board implements ActionListener{
 		};
 		// 맵의 배경색을 정한다.
 		gamezone.setBackground(Color.WHITE);
-		setTextEditors(gamezone);
+		setMapDetail(gamezone);
 		
 		// 컨트롤러부분과 맵 부분을 추가한뒤, 나누는 패널을 만들어
 		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, topPane, gamezone);
@@ -75,39 +81,60 @@ public class Board implements ActionListener{
 		// 부모 패널에 방금 만든 패널을 추가한다.
 		parent.add(splitPane);
 	}
-	private void setTextEditors(JPanel panel){
+	private void setMapDetail(JPanel panel){
 		panel.setLayout(new BorderLayout());
+		
 		JPanel northPanel = new JPanel();
-		northPanel.setBackground(Color.GREEN);
-		northPanel.setSize(700, 100);
-//		northPanel.setBounds(0, 0, 700, 100);
+		northPanel.setOpaque(false);
+
+//		northPanel.setBackground(Color.GREEN);
+		northPanel.setPreferredSize(new Dimension(400, 100));
 		
 		JPanel southPanel = new JPanel();
-		southPanel.setBackground(Color.BLUE);
-		southPanel.setSize(700, 100);
-//		southPanel.setBounds(0, 555, 700, 100);
+//		southPanel.setBackground(Color.BLUE);
+		southPanel.setOpaque(false);
+		southPanel.setPreferredSize(new Dimension(400, 100));
+		southPanel.setLayout(new GridLayout(1, 0));
+		for(int i=0; i<7; i++){
+			JPanel panelStart = new JPanel();
+			southPanel.setOpaque(false);
+			panelStart.setPreferredSize(new Dimension(150, 150));
+			panelStart.setOpaque(false);
+			JLabel label = new JLabel("map::"+i);
+			panelStart.add(label);
+			southPanel.add(panelStart);
+		}
 		
 		JPanel eastPanel = new JPanel();
-		eastPanel.setBackground(Color.PINK);
-		eastPanel.setSize(100, 700);
-//		eastPanel.setBounds(580, 0, 100, 700);
+//		eastPanel.setBackground(Color.PINK);
+		eastPanel.setPreferredSize(new Dimension(150, 480));
 		
 		JPanel westPanel = new JPanel();
-		westPanel.setBackground(Color.RED);
-		westPanel.setSize(100, 700);
-//		westPanel.setBounds(0, 0, 100, 100);
+//		westPanel.setBackground(Color.RED);
+		westPanel.setOpaque(false);
+		westPanel.setPreferredSize(new Dimension(150, 480));
+		westPanel.setLayout(new GridLayout(0, 1));
+		
+		for(int i=0; i<7; i++){
+			JPanel panelStart = new JPanel();
+//			panelStart.setBackground(Color.BLACK);
+			westPanel.setOpaque(false);
+			panelStart.setPreferredSize(new Dimension(150, 150));
+			panelStart.setOpaque(false);
+			JLabel label = new JLabel("map::"+i);
+//			label.setOpaque(false);
+			panelStart.add(label);
+			westPanel.add(panelStart);
+		}
 		
 		JPanel centerPanel = new JPanel();
-		centerPanel.setBackground(Color.YELLOW);
-		centerPanel.setSize(500, 500);
-//		centerPanel.setBounds(100, 100, 500, 500);
+//		centerPanel.setBackground(Color.YELLOW);
 		
-//		JLabel label = new JLabel("출발");
-		panel.add(northPanel); //north
-		panel.add(southPanel); 
-		panel.add(eastPanel); // west
-//		panel.add(westPanel);// center
-//		panel.add(centerPanel); // south
+		panel.add(northPanel, NORTH); //north
+		panel.add(southPanel, SOUTH); 
+//		panel.add(eastPanel, EAST); // 
+		panel.add(westPanel, WEST);
+//		panel.add(centerPanel, CENTER); // 
 	}
 	private Image getImageFromUrl(){
 		Image image = null;
